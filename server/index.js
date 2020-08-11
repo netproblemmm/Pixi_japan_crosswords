@@ -17,6 +17,9 @@ class User {
     }
 }
 
+const userByViewer = {};
+const userByToken = {};
+
 function getUser(req) {
     const {viewer_id, api_id, auth_key} = req.query;
     const check_auth_key = md5(api_id + '_' + viewer_id + '_' + api_secret);
@@ -24,7 +27,15 @@ function getUser(req) {
     if (auth_key !== check_auth_key) {
         return false;
     }
-    return new User({viewer_id});
+
+    let usr = userByViewer[viewer_id];
+    if (usr) {
+        return usr;
+    }
+    usr = new User({viewer_id});
+    userByViewer[usr.viewer_id] = userByToken[usr.token] = usr;
+
+    return usr;
 }
 
 app.get("/api", (req, res) =>{
