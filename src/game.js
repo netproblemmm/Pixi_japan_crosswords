@@ -8,7 +8,7 @@ lvl2.load(2);
 
 const style = new PIXI.TextStyle({
   fontFamily: "Arial",
-  fontSize: 36,
+  fontSize: 30,
   fontStyle: "italic",
   fontWeight: "bold",
   fill: ["#ffffff", "#00ff99"], // gradient
@@ -59,6 +59,11 @@ export class Game {
 
         this.level = lvl1;
         app.runners.initLevel.run(0);
+
+        const tokenTxt = new PIXI.Text(window.config.token, style);
+        tokenTxt.position.set(app.screen.width / 2, 630);
+        tokenTxt.anchor.set(0.5);
+        app.stage.addChild(tokenTxt);
 
         for (let i = 0; i < levels.length; i++) {
           const lvl = levels[i];
